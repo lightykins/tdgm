@@ -8,7 +8,10 @@ void setColor(int color = white){
 }
 int main(int argc, char* argv[]){
     if (SDL_Init(SDL_INIT_VIDEO) != 0){
+	    setColor(red);
 	    std::cout << SDL_GetError() << "\n";
+	    setColor();
+	    return 0;
 	}
 	setColor(green);
 	std::cout << hello + "\n";

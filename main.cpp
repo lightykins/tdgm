@@ -1,10 +1,10 @@
 #include <iostream>
 #include <input.h>
-
-int main()
-{
-    std::cout << hello << "\n";
-	std::cout << "Press enter\n";
-	std::cin.get();
-    return 0;
+#include "SDL.h"
+int main(int argc, char* argv[]){
+    SDL_Init(SDL_INIT_VIDEO);
+	SDL_Quit();
+	std::cout << hello + "\n";
+	std::cin.get(); 
+	return 0;
 }

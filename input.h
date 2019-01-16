@@ -10,7 +10,7 @@ struct input
 	bool d = 0;
 	bool m1 = 0;
 	bool m2 = 0;
-	bool mx = 0;
-	bool my = 0;
+	int mx = 0;
+	int my = 0;
 };
 void updateInput(input* inp, SDL_Event e);

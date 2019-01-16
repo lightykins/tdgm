@@ -25,7 +25,7 @@ include_directories(${SDL2_INCLUDE_DIR}
                     ${SDL2_IMAGE_INCLUDE_DIR}
                     ${SDL2_TTF_INCLUDE_DIR})
 
-add_executable(gaym ${PROJECT_SOURCE_DIR}/main.cpp ${PROJECT_SOURCE_DIR}/input.cpp)
+add_executable(gaym ${PROJECT_SOURCE_DIR}/main.cpp ${PROJECT_SOURCE_DIR}/input.cpp ${PROJECT_SOURCE_DIR}/graphics.cpp)
 
 target_link_libraries(gaym ${SDL2_LIBRARY}
                              ${SDL2_IMAGE_LIBRARIES}

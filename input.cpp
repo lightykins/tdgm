@@ -1,5 +1,5 @@
 #include <input.h>
-#include <SDL.h>
+
 
 void updateInput(input* inp, SDL_Event e){
 	if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP){

@@ -1,13 +1,17 @@
 #include <iostream>
+#include <vector>
 #include <windows.h>
+#include <string>
+#include "SDL.h"
 #include <input.h>
 #include <graphics.h>
-#include "SDL.h"
+#include <entities.h>
+
 int SCREEN_HEIGHT = 480;
 int SCREEN_WIDTH = 640;
 
-input inpp;
 SDL_Window* window = NULL;
+input inpp;
 SDL_Renderer* renderer;
 enum colors {blue = 1, green, cyan, red, purple, dyellow, white, gray, bblue, bcyan, bred, pink, yellow, bwhite};
 void setColor(int color = white){
@@ -43,20 +47,23 @@ int main(int argc, char* argv[]){
 	std::cout << "\n\n\n" + hello + "\n\n\n";
 	setColor((white << 4) + cyan);
 	bool quit = 0;
-	SDL_Rect rect;
-	rect.x = 50; rect.y = 50; rect.w = 50; rect.h = 50;
-	color Color; Color.b = 255;
+	std::vector<entity> entities;
+	initTextures(renderer);
+	entities.push_back({new Player, player});
+	Player test;
+	test.hitbox.x = 100;
+	test.hitbox.w = 150;
+	test.hitbox.y = 200;
+	entities.push_back({&test, player});
 	while (!quit){
 		quit = updateEvts();
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderClear(renderer);
-		render(&rect, renderer, Color, rectangle);
-		SDL_RenderPresent(renderer);
-		std::cout << "w " << inpp.w << " "
-		          << "a " << inpp.a << " "
-				  << "s " << inpp.s << " "
-				  << "d " << inpp.d << " "
-				  << '\r' << std::flush;
+		//	updateAll(&(entities[0]));     //*later*
+		renderAll(renderer, entities);     
+		std::cout 	<< "w " << inpp.w << " "
+					<< "a " << inpp.a << " "
+					<< "s " << inpp.s << " "
+					<< "d " << inpp.d << " "
+					<< '\r' << std::flush;
 	}
 	SDL_Quit();
 	return 0;

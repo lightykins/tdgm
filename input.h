@@ -1,3 +1,6 @@
+#ifndef INPUT_INCLUDED
+#define INPUT_INCLUDED
+
 #include <SDL.h>
 #include <string>
 
@@ -13,4 +16,7 @@ struct input
 	int mx = 0;
 	int my = 0;
 };
+
 void updateInput(input* inp, SDL_Event e);
+
+#endif

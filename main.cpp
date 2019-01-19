@@ -11,7 +11,6 @@ int SCREEN_HEIGHT = 480;
 int SCREEN_WIDTH = 640;
 
 SDL_Window* window = NULL;
-input inpp;
 SDL_Renderer* renderer;
 enum colors {blue = 1, green, cyan, red, purple, dyellow, white, gray, bblue, bcyan, bred, pink, yellow, bwhite};
 void setColor(int color = white){
@@ -24,7 +23,7 @@ bool updateEvts(){
 			return 1;
 		}else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP || e.type == SDL_MOUSEMOTION 
 			      || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP){
-			updateInput(&inpp, e);
+			updateInput(e);
 		}
 	}	
 	return 0;
@@ -50,19 +49,18 @@ int main(int argc, char* argv[]){
 	std::vector<entity> entities;
 	initTextures(renderer);
 	entities.push_back({new Player, player});
-	Player test;
-	test.hitbox.x = 100;
-	test.hitbox.w = 150;
-	test.hitbox.y = 200;
-	entities.push_back({&test, player});
+	Player plr;
+	int t = sizeof(Player*);
+	std::cout << t;
+	std::cin.get();
 	while (!quit){
 		quit = updateEvts();
-		//	updateAll(&(entities[0]));     //*later*
+		updateAll(entities);     //*later*
 		renderAll(renderer, entities);     
-		std::cout	<< "w " << inpp.w << " "
-					<< "a " << inpp.a << " "
-					<< "s " << inpp.s << " "
-					<< "d " << inpp.d << " "
+		std::cout	<< "w " << getInput()->w << " "
+					<< "a " << getInput()->a << " "
+					<< "s " << getInput()->s << " "
+					<< "d " << getInput()->d << " "
 					<< '\r' << std::flush;
 	}
 	SDL_Quit();

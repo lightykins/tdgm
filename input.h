@@ -16,7 +16,7 @@ struct input
 	int mx = 0;
 	int my = 0;
 };
-
-void updateInput(input* inp, SDL_Event e);
+input* getInput();
+void updateInput(SDL_Event e);
 
 #endif

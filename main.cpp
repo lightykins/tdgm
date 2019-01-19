@@ -59,7 +59,7 @@ int main(int argc, char* argv[]){
 		quit = updateEvts();
 		//	updateAll(&(entities[0]));     //*later*
 		renderAll(renderer, entities);     
-		std::cout 	<< "w " << inpp.w << " "
+		std::cout	<< "w " << inpp.w << " "
 					<< "a " << inpp.a << " "
 					<< "s " << inpp.s << " "
 					<< "d " << inpp.d << " "

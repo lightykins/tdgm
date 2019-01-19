@@ -14,7 +14,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 set(SDL2_PATH "SDL2 path" CACHE STRING "")
-
+SET(SDL2_IMAGELIB "../libSDL2_image.dll.a" CACHE STRING "")
 # The following folder will be included
 
 include_directories("${PROJECT_SOURCE_DIR}")
@@ -27,4 +27,4 @@ include_directories(${SDL2_INCLUDE_DIR}
 
 add_executable(gaym ${PROJECT_SOURCE_DIR}/main.cpp ${PROJECT_SOURCE_DIR}/input.cpp ${PROJECT_SOURCE_DIR}/graphics.cpp ${PROJECT_SOURCE_DIR}/entities.cpp)
 
-target_link_libraries(gaym ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES} C:/Users/w/Desktop/source/SDL2-2.0.9/i686-w64-mingw32/lib/libSDL2_image.dll.a)
+target_link_libraries(gaym ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES} ${SDL2_IMAGELIB})

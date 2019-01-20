@@ -48,15 +48,19 @@ int main(int argc, char* argv[]){
 	bool quit = 0;
 	std::vector<entity> entities;
 	initTextures(renderer);
+	SDL_Rect reticlebox; reticlebox.w = 30; reticlebox.h = 30;
+	Texture reticle; reticle.first = getTexture(reticleTex); reticle.second = &reticlebox;
 	entities.push_back({new Player, player});
-	Player plr;
-	int t = sizeof(Player*);
-	std::cout << t;
-	std::cin.get();
+	entities.push_back({&reticle, tex});
 	while (!quit){
 		quit = updateEvts();
-		updateAll(entities);     //*later*
-		renderAll(renderer, entities);     
+		updateAll(entities);
+		reticle.second->x = getInput()->mx - reticlebox.w/2; reticle.second->y = getInput()->my - reticlebox.h/2;
+		unsigned int before = SDL_GetTicks();
+		renderAll(renderer, entities);
+		unsigned int diff = SDL_GetTicks() - before;
+		if (diff < 1000/120) {SDL_Delay(1000/120 - diff);}
+		else {setGlobalSpeed(diff / (1000/120));}
 		std::cout	<< "w " << getInput()->w << " "
 					<< "a " << getInput()->a << " "
 					<< "s " << getInput()->s << " "

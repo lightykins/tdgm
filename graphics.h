@@ -6,7 +6,8 @@
 #include <string>
 
 enum {rectangleRender, spriteRender};
-enum {playerTex, enemyTex, projectileTex, ALWAYS_LAST};
+enum {playerTex, enemyTex, projectileTex, reticleTex, ALWAYS_LAST};
+typedef std::pair<SDL_Texture*, SDL_Rect*> Texture;
 struct color{
 	int r = 0;
 	int g = 0;

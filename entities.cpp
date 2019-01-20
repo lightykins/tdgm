@@ -2,6 +2,7 @@
 #include <input.h>
 #include <iostream>
 typedef void (*func)(void);
+unsigned int globalSpeed = 1;
 Player::Player(){
 	hitbox.x = 100;
 	hitbox.y = 100;
@@ -16,16 +17,22 @@ void Player::update(){
 		speedY = 0;
 	}else if (getInput()->w || getInput()->s)
 	{
-		speedY = getInput()->w ? -1 : 1;
+		speedY = (getInput()->w ? -1 : 1)*moveSpeedY*globalSpeed;
 	}
 	if (getInput()->d && getInput()->a || (!getInput()->d && !getInput()->a)){
 		speedX = 0;
 	}else if (getInput()->d || getInput()->a)
 	{
-		speedX = getInput()->a ? -1 : 1;
+		speedX = (getInput()->a ? -1 : 1)*moveSpeedY*globalSpeed;
 	}
+	//if (speedX && speedY){
+	//	speedY *= 0.7071;
+	//	speedX *= 0.7071;
+	//}
 	hitbox.x += speedX;
 	hitbox.y += speedY;
+	speedX = 0;
+	speedY = 0;
 }
 void Projectile::update(){
 
@@ -44,4 +51,7 @@ void updateAll(std::vector<entity>& entities){
 				break;
 		}
 	}
+}
+void setGlobalSpeed(unsigned int speed){
+	globalSpeed = speed;
 }

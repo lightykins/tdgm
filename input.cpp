@@ -28,8 +28,10 @@ void updateInput(SDL_Event e){
 			switch(e.button.button){
 				case SDL_BUTTON_LEFT:
 				    inpp.m1 = flag;
+					break;
 				case SDL_BUTTON_RIGHT:
 				    inpp.m2 = flag;
+					break;
 			}
 		}
     }

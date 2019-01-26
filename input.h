@@ -7,6 +7,7 @@
 const std::string hello = "hello world";
 struct input 
 {
+	bool one = 0;
 	bool w = 0;
 	bool a = 0;
 	bool s = 0;

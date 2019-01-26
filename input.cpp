@@ -1,4 +1,4 @@
-#include <input.h>
+#include <input.h>										//мб сделать по сканкодам как в тееворлд но надо до конца разобраться
 
 input inpp;
 void updateInput(SDL_Event e){
@@ -17,6 +17,9 @@ void updateInput(SDL_Event e){
 		    case SDLK_d:
 		        inpp.d = flag;
 			    break;
+			case SDLK_1:
+				inpp.one = flag;
+				break;
 		}
 	}else
 	{

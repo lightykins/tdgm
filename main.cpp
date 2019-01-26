@@ -65,6 +65,7 @@ int main(int argc, char* argv[]){
 					<< "a " << getInput()->a << " "
 					<< "s " << getInput()->s << " "
 					<< "d " << getInput()->d << " "
+					<< "1 " << getInput()->one << " "
 					<< '\r' << std::flush;
 	}
 	SDL_Quit();

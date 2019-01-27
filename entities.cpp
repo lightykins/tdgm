@@ -9,6 +9,12 @@ Player::Player(){
 	hitbox.w = 50;
 	hitbox.h = 50;
 }
+Enemy::Enemy(){
+	hitbox.x = 100;
+	hitbox.y = 100;
+	hitbox.w = 50;
+	hitbox.h = 50;
+}
 void Player::update(){
 	if (!this->hp){
 		std::cout << "You fucked up\n";
@@ -34,6 +40,13 @@ void Player::update(){
 	speedX = 0;
 	speedY = 0;
 }
+
+void Enemy::update(){
+	if (getInput()->one){
+		hitbox.x = getInput()->mx;
+		hitbox.y = getInput()->my;
+	}
+}
 void Projectile::update(){
 
 }
@@ -43,14 +56,16 @@ void updateAll(std::vector<entity>& entities){
 			case player:
 				((Player*)(entities[i].first))->update();
 				break;
-			/*case enemy:
+			case enemy:
 				((Enemy*)(entities[i].first))->update();
-				break;*/
+				break;
 			case projectile:
 				((Projectile*)(entities[i].first))->update();
 				break;
 		}
 	}
+	if (getInput()->one){
+		entities.push_back({new Enemy, enemy});   //если зажать двигаецо
 }
 void setGlobalSpeed(unsigned int speed){
 	globalSpeed = speed;

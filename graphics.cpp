@@ -36,12 +36,14 @@ void renderAll(SDL_Renderer* renderer, const std::vector<entity> &ents){
 				render(&txt, renderer, NULL, spriteRender);
 				break;
 			case enemy:
-				Enemy* pt2 = (Enemy*)(ents[i].first);
-				render(&(pt2->hitbox), renderer, &hbox, rectangleRender);
-				Texture txt2;
-				txt2.first = pt2->sprite;
-				txt2.second = &(pt2->hitbox);
-				render(&txt2, renderer, NULL, spriteRender);
+			{
+				Enemy* pt = (Enemy*)(ents[i].first);
+				render(&(pt->hitbox), renderer, &hbox, rectangleRender);
+				Texture txt;
+				txt.first = pt->sprite;
+				txt.second = &(pt->hitbox);
+				render(&txt, renderer, NULL, spriteRender);
+			}
 				break; //////
 			case projectile:
 				break;

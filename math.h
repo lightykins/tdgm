@@ -1,0 +1,1 @@
+void normalise(double* x, double* y);

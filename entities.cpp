@@ -1,5 +1,6 @@
 #include <entities.h>
 #include <input.h>
+#include <math.h>
 #include <iostream>
 typedef void (*func)(void);
 unsigned int globalSpeed = 1;
@@ -31,10 +32,7 @@ void Player::update(){
 	{
 		speedX = (getInput()->a ? -1 : 1)*moveSpeedY*globalSpeed;
 	}
-	//if (speedX && speedY){
-	//	speedY *= 0.7071;
-	//	speedX *= 0.7071;
-	//}
+	//normalise(&speedX, &speedY);
 	hitbox.x += speedX;
 	hitbox.y += speedY;
 	speedX = 0;
@@ -66,6 +64,7 @@ void updateAll(std::vector<entity>& entities){
 	}
 	if (getInput()->one){
 		entities.push_back({new Enemy, enemy});   //если зажать двигаецо
+    }
 }
 void setGlobalSpeed(unsigned int speed){
 	globalSpeed = speed;

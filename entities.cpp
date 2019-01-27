@@ -32,11 +32,19 @@ void Player::update(){
 	{
 		speedX = (getInput()->a ? -1 : 1)*moveSpeedY*globalSpeed;
 	}
-	//normalise(&speedX, &speedY);
-	hitbox.x += speedX;
-	hitbox.y += speedY;
-	speedX = 0;
-	speedY = 0;
+	bool x = speedX != 0;
+	bool y = speedY != 0;
+	double deltaX = speedX < 0 ? speedX * -1 : speedX;
+	double deltaY = speedY < 0 ? speedY * -1 : speedY;
+	normalise(deltaX, deltaY);
+	if (x){
+		hitbox.x += (int)(speedX * deltaX);
+		speedX = 0;
+	}
+	if (y){
+		hitbox.y += (int)(speedY * deltaY);
+		speedY = 0;
+	}
 }
 
 void Enemy::update(){

@@ -1,1 +1,1 @@
-void normalise(double* x, double* y);
+void normalise(double& x, double& y);

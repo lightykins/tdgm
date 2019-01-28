@@ -40,13 +40,16 @@ struct Enemy{
 
 struct Projectile{
 	void update(); 
-	int speedX = 0;
-	int speedY = 0;
+	double x;
+	double y;
+	double speedX = 0;
+	double speedY = 0;
 	SDL_Rect hitbox;
 	SDL_Texture* sprite = getTexture(projectileTex);
 	unsigned int renderType = spriteRender;
+	Projectile();
 };
-
+std::vector<entity>& getEntities();
 
 void updateAll(std::vector<entity>& entities);
 void setGlobalSpeed(unsigned int speed);

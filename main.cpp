@@ -46,7 +46,7 @@ int main(int argc, char* argv[]){
 	std::cout << "\n\n\n" + hello + "\n\n\n";
 	setColor((white << 4) + cyan);
 	bool quit = 0;
-	std::vector<entity> entities;
+	std::vector<entity>& entities = getEntities();
 	initTextures(renderer);
 	SDL_Rect reticlebox; reticlebox.w = 30; reticlebox.h = 30;
 	Texture reticle; reticle.first = getTexture(reticleTex); reticle.second = &reticlebox;
@@ -61,12 +61,12 @@ int main(int argc, char* argv[]){
 		unsigned int diff = SDL_GetTicks() - before;
 		if (diff < 1000/120) {SDL_Delay(1000/120 - diff);}
 		else {setGlobalSpeed(diff / (1000/120));}
-		std::cout	<< "w " << getInput()->w << " "
+		/*std::cout	/*<< "w " << getInput()->w << " "
 					<< "a " << getInput()->a << " "
 					<< "s " << getInput()->s << " "
 					<< "d " << getInput()->d << " "
 					<< "1 " << getInput()->one << " "
-					<< '\r' << std::flush;
+					<< '\r' << std::flush;*/
 	}
 	SDL_Quit();
 	return 0;

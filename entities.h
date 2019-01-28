@@ -12,6 +12,8 @@ typedef std::pair<void*, int> entity;
 
 struct Player{
 	void update(); 
+	double x = 100;
+	double y = 100;
 	unsigned int hp = 100;
 	unsigned int def = 10;
 	double moveSpeedX = 2;

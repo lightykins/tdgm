@@ -65,11 +65,13 @@ void Player::update(){
 	double deltaY = speedY < 0 ? speedY * -1 : speedY;
 	normalise(deltaX, deltaY);
 	if (x){
-		hitbox.x += (int)(speedX * deltaX);
+		this->x += (speedX * deltaX);
+		hitbox.x = (int)(this->x);
 		speedX = 0;
 	}
 	if (y){
-		hitbox.y += (int)(speedY * deltaY);
+		this->y += (speedY * deltaY);
+		hitbox.y = (int)(this->y);
 		speedY = 0;
 	}
 }

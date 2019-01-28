@@ -54,5 +54,5 @@ struct Projectile{
 std::vector<entity>& getEntities();
 
 void updateAll(std::vector<entity>& entities);
-void setGlobalSpeed(unsigned int speed);
+void setGlobalSpeed(double speed);
 #endif

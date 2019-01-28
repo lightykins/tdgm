@@ -12,10 +12,7 @@ int SCREEN_WIDTH = 640;
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer;
-enum colors {blue = 1, green, cyan, red, purple, dyellow, white, gray, bblue, bcyan, bred, pink, yellow, bwhite};
-void setColor(int color = white){
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
+
 bool updateEvts(){
 	static SDL_Event e;
 	while(SDL_PollEvent(&e) != 0){
@@ -59,8 +56,8 @@ int main(int argc, char* argv[]){
 		unsigned int before = SDL_GetTicks();
 		renderAll(renderer, entities);
 		unsigned int diff = SDL_GetTicks() - before;
-		if (diff < 1000/120) {SDL_Delay(1000/120 - diff);}
-		else {setGlobalSpeed(diff / (1000/120));}
+		if (diff < 1000/120) {SDL_Delay(1000/120 - diff); setGlobalSpeed(1);}
+		else {setGlobalSpeed((double)diff / (1000/120));}
 		/*std::cout	/*<< "w " << getInput()->w << " "
 					<< "a " << getInput()->a << " "
 					<< "s " << getInput()->s << " "

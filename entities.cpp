@@ -1,12 +1,17 @@
 #include <entities.h>
+#include <graphics.h>
 #include <input.h>
 #include <math.h>
 #include <iostream>
 typedef void (*func)(void);
-unsigned int globalSpeed = 1;
+double globalSpeed = 1;
 unsigned int last2 = 0;
 std::vector<entity> entities;
 std::vector<entity>& getEntities(){
+	static bool once = [](){
+		entities.reserve(128);
+		return true;
+	} ();
 	return entities;
 }
 Player::Player(){
@@ -90,6 +95,15 @@ void Projectile::update(){
 }
 void updateAll(std::vector<entity>& entities){
 	int size = entities.size();
+	if (size > 128)
+	{
+		static bool once = [](){
+			setColor(byellow);
+			std::cout << "Warning: over 128 entities\n";
+			setColor();
+			return true;
+		} ();
+	}
 	for (int i = 0; i < size; ++i){
 		switch(entities[i].second){
 			case player:
@@ -107,6 +121,6 @@ void updateAll(std::vector<entity>& entities){
 		entities.push_back({new Enemy, enemy});   //если зажать двигаецо
     }
 }
-void setGlobalSpeed(unsigned int speed){
+void setGlobalSpeed(double speed){
 	globalSpeed = speed;
 }

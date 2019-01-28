@@ -1,10 +1,14 @@
 #include <iostream>
+#include <windows.h>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <entities.h>
 #include <graphics.h>
 std::vector<SDL_Texture*> textures;
 std::vector<std::string> textureFnames = {"player.png", "enemy.png", "projectile.png", "reticle.png"};
+void setColor(int color){
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
 void render(void* pt, SDL_Renderer* renderer, color* Color, int type){
 	switch(type){
 		case rectangleRender:

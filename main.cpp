@@ -57,7 +57,7 @@ int main(int argc, char* argv[]){
 		renderAll(renderer, entities);
 		unsigned int diff = SDL_GetTicks() - before;
 		if (diff < 1000/120) {SDL_Delay(1000/120 - diff); setGlobalSpeed(1);}
-		else {setGlobalSpeed((double)diff / (1000/120));}
+		else {setGlobalSpeed((double)diff / (((double)1000)/120));}
 		/*std::cout	/*<< "w " << getInput()->w << " "
 					<< "a " << getInput()->a << " "
 					<< "s " << getInput()->s << " "

@@ -45,22 +45,22 @@ void Player::update(){
 		last2 = SDL_GetTicks();
 		Projectile* pj = new Projectile;
 		Texture* reticle = (Texture*)(entities[1].first);
-		double x = reticle->second->x - hitbox.x;
-		double y = reticle->second->y - hitbox.y;
+		double x = reticle->second->x - reticle->second->w/2 - hitbox.x;
+		double y = reticle->second->y - reticle->second->h/2 - hitbox.y;
 		normalise(x, y);
 		pj->speedX = x;
 		pj->speedY = y;
 		entities.push_back({pj, projectile});
 	}
-	if ((getInput()->w && getInput()->s) || (!getInput()->w && !getInput()->s)){
+	if (getInput()->w == getInput()->s){
 		speedY = 0;
-	}else if (getInput()->w || getInput()->s)
+	}else
 	{
 		speedY = (getInput()->w ? -1 : 1)*moveSpeedY*globalSpeed;
 	}
-	if (getInput()->d && getInput()->a || (!getInput()->d && !getInput()->a)){
+	if (getInput()->d == getInput()->a){
 		speedX = 0;
-	}else if (getInput()->d || getInput()->a)
+	}else
 	{
 		speedX = (getInput()->a ? -1 : 1)*moveSpeedY*globalSpeed;
 	}

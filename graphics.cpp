@@ -25,15 +25,17 @@ void render(void* pt, SDL_Renderer* renderer, color* Color, int type){
 }
 void renderAll(SDL_Renderer* renderer, const std::vector<entity> &ents){
 	color hbox;
-	hbox.r = 255;
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	hbox.r = 255;	
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
 	SDL_RenderClear(renderer);
 	static SDL_Rect* rect;
+	int imgFlags = IMG_INIT_PNG;
+	if( !( IMG_Init( imgFlags ) & imgFlags ) ) { printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() ); }
 	for(int i = 0; i < ents.size(); ++i){
 		switch(ents[i].second){
 			case player:
 				static Player* pt = (Player*)(ents[i].first);
-				render(&(pt->hitbox), renderer, &hbox, rectangleRender);
+				//render(&(pt->hitbox), renderer, &hbox, rectangleRender);
 				static Texture txt;
 				txt.first = pt->sprite;
 				txt.second = &(pt->hitbox);
@@ -42,7 +44,7 @@ void renderAll(SDL_Renderer* renderer, const std::vector<entity> &ents){
 			case enemy:
 			{
 				Enemy* pt = (Enemy*)(ents[i].first);
-				render(&(pt->hitbox), renderer, &hbox, rectangleRender);
+				//render(&(pt->hitbox), renderer, &hbox, rectangleRender);
 				Texture txt;
 				txt.first = pt->sprite;
 				txt.second = &(pt->hitbox);
@@ -52,7 +54,7 @@ void renderAll(SDL_Renderer* renderer, const std::vector<entity> &ents){
 			case projectile:
 			{
 				Projectile* pt = (Projectile*)(ents[i].first);
-				render(&(pt->hitbox), renderer, &hbox, rectangleRender);
+				//render(&(pt->hitbox), renderer, &hbox, rectangleRender);
 				Texture txt;
 				txt.first = pt->sprite;
 				txt.second = &(pt->hitbox);

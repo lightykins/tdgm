@@ -23,6 +23,7 @@ struct Player{
 	SDL_Rect hitbox;
 	SDL_Texture* sprite = getTexture(playerTex);
 	unsigned int renderType = spriteRender;
+	long index = 0;
     Player();
 };
 
@@ -37,6 +38,7 @@ struct Enemy{
 	SDL_Rect hitbox;
 	SDL_Texture* sprite = getTexture(enemyTex);
 	unsigned int renderType = spriteRender;
+	long index;
 	Enemy();
 };
 
@@ -49,10 +51,11 @@ struct Projectile{
 	SDL_Rect hitbox;
 	SDL_Texture* sprite = getTexture(projectileTex);
 	unsigned int renderType = spriteRender;
+	long index;
 	Projectile();
 };
 std::vector<entity>& getEntities();
-
+void removeEntity(long index);
 void updateAll(std::vector<entity>& entities);
 void setGlobalSpeed(double speed);
 #endif

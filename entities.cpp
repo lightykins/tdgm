@@ -7,6 +7,7 @@ typedef void (*func)(void);
 double globalSpeed = 1;
 unsigned int last2 = 0;
 std::vector<entity> entities;
+long currEntityReserve = 128;
 std::vector<entity>& getEntities(){
 	static bool once = [](){
 		entities.reserve(128);
@@ -95,14 +96,13 @@ void Projectile::update(){
 }
 void updateAll(std::vector<entity>& entities){
 	int size = entities.size();
-	if (size > 128)
+	if (size > currEntityReserve)
 	{
-		static bool once = [](){
-			setColor(byellow);
-			std::cout << "Warning: over 128 entities\n";
-			setColor();
-			return true;
-		} ();
+		currEntityReserve *= 2;
+		entities.reserve(currEntityReserve);
+		setColor(byellow);
+		std::cout << "Warning: over " << currEntityReserve/2 << " entities\n";
+		setColor();
 	}
 	for (int i = 0; i < size; ++i){
 		switch(entities[i].second){

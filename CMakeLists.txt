@@ -14,7 +14,7 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 set(SDL2_PATH "SDL2 path" CACHE STRING "")
-SET(SDL2_IMAGELIB "${SDL2_PATH}\\lib\\libSDL2_image.dll.a")
+SET(SDL2_IMAGELIB "${SDL2_PATH}/lib/libSDL2_image.dll.a")
 # The following folder will be included
 
 include_directories("${PROJECT_SOURCE_DIR}")

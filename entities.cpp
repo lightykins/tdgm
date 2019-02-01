@@ -8,6 +8,7 @@ double globalSpeed = 1;
 unsigned int last2 = 0;
 std::vector<entity> entities;
 long currEntityReserve = 128;
+bool enexist =0;
 std::vector<entity>& getEntities(){
 	static bool once = [](){
 		entities.reserve(128);
@@ -26,8 +27,8 @@ Player::Player(){
 	hitbox.h = 50;
 }
 Enemy::Enemy(){
-	hitbox.x = 100;
-	hitbox.y = 100;
+	hitbox.x = getInput()->mx;
+	hitbox.y = getInput()->my;
 	hitbox.w = 50;
 	hitbox.h = 50;
 	index = getEntities().size() - 1;
@@ -90,8 +91,8 @@ void Player::update(){
 
 void Enemy::update(){
 	if (getInput()->one){
-		//hitbox.x = getInput()->mx;
-		//hitbox.y = getInput()->my;
+		hitbox.x = getInput()->mx;
+		hitbox.y = getInput()->my;
 	}
 }
 void Projectile::update(){
@@ -122,16 +123,22 @@ void updateAll(std::vector<entity>& entities){
 			case enemy:
 				((Enemy*)(entities[i].first))->index = i;
 				((Enemy*)(entities[i].first))->update();
+				enexist = 1;
 				break;
 			case projectile:
 				((Projectile*)(entities[i].first))->index = i;
 				((Projectile*)(entities[i].first))->update();
 				break;
 		}
+		if (getInput()->one)			//мб зделать в отдельную функцию
+			if(!enexist)
+				entities.push_back({new Enemy, enemy});/*
+			((Enemy*)(entities[i].first))->hitbox.x = getInput()->mx;
+			((Enemy*)(entities[i].first))->hitbox.y = getInput()->my;*/
+		
+	
 	}
-	if (getInput()->one){
-		entities.push_back({new Enemy, enemy});   //если зажать двигаецо
-    }
+
 }
 void setGlobalSpeed(double speed){
 	globalSpeed = speed;

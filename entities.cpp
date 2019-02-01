@@ -8,7 +8,7 @@ double globalSpeed = 1;
 unsigned int last2 = 0;
 std::vector<entity> entities;
 long currEntityReserve = 128;
-bool enexist =0;
+bool enemyLatch = 1;
 std::vector<entity>& getEntities(){
 	static bool once = [](){
 		entities.reserve(128);
@@ -31,7 +31,6 @@ Enemy::Enemy(){
 	hitbox.y = getInput()->my;
 	hitbox.w = 50;
 	hitbox.h = 50;
-	index = getEntities().size() - 1;
 }
 Projectile::Projectile(){
 	Player* plr = (Player*)(getEntities()[0].first);
@@ -41,14 +40,19 @@ Projectile::Projectile(){
 	this->y = hitbox.y;
 	hitbox.w = 50;
 	hitbox.h = 50;
-	index = (getEntities().size() - 1) + 1;
 }
 void Player::update(){
 	//unsigned int last2;
 	if (!this->hp){
 		std::cout << "You fucked up\n";
 	}
-
+	if (getInput()->one && enemyLatch){
+		enemyLatch = 0;
+		getEntities().push_back({new Enemy, enemy});
+	}
+	if (!getInput()->one){
+		enemyLatch = 1;
+	}
 	if (getInput()->m1 && ((SDL_GetTicks() - last2) > 200)){
 		last2 = SDL_GetTicks();
 		Projectile* pj = new Projectile;
@@ -90,17 +94,17 @@ void Player::update(){
 }
 
 void Enemy::update(){
-	if (getInput()->one){
-		hitbox.x = getInput()->mx;
-		hitbox.y = getInput()->my;
-	}
+/*  if (getInput()->one){			
+		hitbox.x = getInput()->mx;	 
+		hitbox.y = getInput()->my;	 
+	}								 */
 }
 void Projectile::update(){
 		this->x += speedX*2*globalSpeed;
 		this->y += speedY*2*globalSpeed;
 		if (this->x <= 100){
 			delete this; //https://www.youtube.com/watch?v=N5TWbeav7hI
-			removeEntity(index);
+			this->dead = 1;
 		}
 		hitbox.x = (int)(this->x);
 		hitbox.y = (int)(this->y);
@@ -121,24 +125,19 @@ void updateAll(std::vector<entity>& entities){
 				((Player*)(entities[i].first))->update();
 				break;
 			case enemy:
-				((Enemy*)(entities[i].first))->index = i;
 				((Enemy*)(entities[i].first))->update();
-				enexist = 1;
+				if (((Enemy*)(entities[i].first))->dead){
+					removeEntity(i);
+				}
 				break;
 			case projectile:
-				((Projectile*)(entities[i].first))->index = i;
 				((Projectile*)(entities[i].first))->update();
+				if (((Projectile*)(entities[i].first))->dead){
+					removeEntity(i);
+				}
 				break;
 		}
-		if (getInput()->one)			//мб зделать в отдельную функцию
-			if(!enexist)
-				entities.push_back({new Enemy, enemy});/*
-			((Enemy*)(entities[i].first))->hitbox.x = getInput()->mx;
-			((Enemy*)(entities[i].first))->hitbox.y = getInput()->my;*/
-		
-	
 	}
-
 }
 void setGlobalSpeed(double speed){
 	globalSpeed = speed;

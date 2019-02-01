@@ -1,5 +1,5 @@
 # tdgm
-![alt text](https://imgur.com/a/TryExJI)[/image]
+![alt text](https://i.imgur.com/75yaf78.png)[/image]
 # итак что надо сделать 
 
 1. камера и чтобы за плеером двигаласьр

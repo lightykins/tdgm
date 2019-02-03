@@ -6,64 +6,36 @@
 #include <graphics.h>
 std::vector<SDL_Texture*> textures;
 std::vector<std::string> textureFnames = {"player.png", "enemy.png", "projectile.png", "reticle.png"};
+SDL_Renderer* ourRenderer = NULL;
 void setColor(int color){
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
-void render(void* pt, SDL_Renderer* renderer, color* Color, int type){
+void render(void* pt, int type, color* Color){
 	switch(type){
 		case rectangleRender:
-		{
-		    SDL_Rect* rect = (SDL_Rect*)pt;
-			SDL_SetRenderDrawColor(renderer, Color->r, Color->g, Color->b, Color->a);
-			SDL_RenderFillRect(renderer, rect);
-		}
+			{
+				if (Color != NULL){
+					SDL_Rect* rect = (SDL_Rect*)pt;
+					SDL_SetRenderDrawColor(ourRenderer, Color->r, Color->g, Color->b, Color->a);
+					SDL_RenderFillRect(ourRenderer, rect);
+				}
+			}
 			break;
 		case spriteRender:
-		    SDL_RenderCopy(renderer, ((Texture*)pt)->first, NULL, ((Texture*)pt)->second);
+		    SDL_RenderCopy(ourRenderer, ((Texture*)pt)->first, NULL, ((Texture*)pt)->second);
 			break;
 	}
 }
-void renderAll(SDL_Renderer* renderer, const std::vector<entity> &ents){
-	color hbox;
-	hbox.r = 255;	
+void renderAll(SDL_Renderer* renderer, const std::vector<entity*>& ents){
+	if (ourRenderer == NULL){
+		ourRenderer = renderer;
+	}
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
 	SDL_RenderClear(renderer);
-	static SDL_Rect* rect;
 	int imgFlags = IMG_INIT_PNG;
 	if( !( IMG_Init( imgFlags ) & imgFlags ) ) { printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() ); }
 	for(int i = 0; i < ents.size(); ++i){
-		switch(ents[i].second){
-			case player:
-				static Player* pt = (Player*)(ents[i].first);
-				//render(&(pt->hitbox), renderer, &hbox, rectangleRender);
-				static Texture txt;
-				txt.first = pt->sprite;
-				txt.second = &(pt->hitbox);
-				render(&txt, renderer, NULL, spriteRender);
-				break;
-			case enemy:
-			{
-				Enemy* pt = (Enemy*)(ents[i].first);
-				//render(&(pt->hitbox), renderer, &hbox, rectangleRender);
-				Texture txt;
-				txt.first = pt->sprite;
-				txt.second = &(pt->hitbox);
-				render(&txt, renderer, NULL, spriteRender);
-			}
-				break; //////
-			case projectile:
-			{
-				Projectile* pt = (Projectile*)(ents[i].first);
-				//render(&(pt->hitbox), renderer, &hbox, rectangleRender);
-				Texture txt;
-				txt.first = pt->sprite;
-				txt.second = &(pt->hitbox);
-				render(&txt, renderer, NULL, spriteRender);
-			}
-				break;
-			case tex:
-				render((Texture*)(ents[i].first), renderer, NULL, spriteRender);
-		}
+		ents[i]->renderMe();
 	}
 	SDL_RenderPresent(renderer);
 }

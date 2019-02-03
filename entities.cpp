@@ -3,13 +3,13 @@
 #include <input.h>
 #include <math.h>
 #include <iostream>
-typedef void (*func)(void);
 double globalSpeed = 1;
 unsigned int last2 = 0;
-std::vector<entity> entities;
+std::vector<entity*> entities;
 long currEntityReserve = 128;
 bool enemyLatch = 1;
-std::vector<entity>& getEntities(){
+
+std::vector<entity*>& getEntities(){
 	static bool once = [](){
 		entities.reserve(128);
 		return true;
@@ -17,7 +17,7 @@ std::vector<entity>& getEntities(){
 	return entities;
 }
 void removeEntity(long index){
-	std::vector<entity>& ents = getEntities();
+	std::vector<entity*>& ents = getEntities();
 	ents.erase(ents.begin()+index);
 }
 Player::Player(){
@@ -25,30 +25,49 @@ Player::Player(){
 	hitbox.y = 100;
 	hitbox.w = 50;
 	hitbox.h = 50;
+	sprite = getTexture(playerTex);
+	renderType = spriteRender;
+	texture = new Texture;
+	*texture = {sprite, &hitbox};
+	reticleBox.w = 50;
+	reticleBox.h = 50;
+	reticleSprite = getTexture(reticleTex);
+	reticleTexture = new Texture;
+	*reticleTexture = {reticleSprite, &reticleBox};
 }
 Enemy::Enemy(){
 	hitbox.x = getInput()->mx;
 	hitbox.y = getInput()->my;
 	hitbox.w = 50;
 	hitbox.h = 50;
+	sprite = getTexture(enemyTex);
+	renderType = spriteRender;
+	texture = new Texture;
+	*texture = {sprite, &hitbox};
 }
 Projectile::Projectile(){
-	Player* plr = (Player*)(getEntities()[0].first);
+	Player* plr = (Player*)(getEntities()[0]);
 	hitbox.x = plr->hitbox.x;
 	hitbox.y = plr->hitbox.y;
 	this->x = hitbox.x;
 	this->y = hitbox.y;
 	hitbox.w = 50;
 	hitbox.h = 50;
+	sprite = getTexture(projectileTex);
+	renderType = spriteRender;
+	texture = new Texture;
+	*texture = {sprite, &hitbox};
 }
 void Player::update(){
 	//unsigned int last2;
 	if (!this->hp){
 		std::cout << "You fucked up\n";
 	}
+	reticleBox.x = getInput()->mx - reticleBox.w/2;
+	reticleBox.y = getInput()->my - reticleBox.h/2;
 	if (getInput()->one && enemyLatch){
 		enemyLatch = 0;
-		getEntities().push_back({new Enemy, enemy});
+		getEntities().push_back(new Enemy);
 	}
 	if (!getInput()->one){
 		enemyLatch = 1;
@@ -56,13 +75,13 @@ void Player::update(){
 	if (getInput()->m1 && ((SDL_GetTicks() - last2) > 200)){
 		last2 = SDL_GetTicks();
 		Projectile* pj = new Projectile;
-		Texture* reticle = (Texture*)(entities[1].first);
-		double x = reticle->second->x - reticle->second->w/2 - hitbox.x;
-		double y = reticle->second->y - reticle->second->h/2 - hitbox.y;
+		//Texture* reticle = (Texture*)(entities[1]);
+		double x = reticleBox.x - reticleBox.w/2 - hitbox.x;
+		double y = reticleBox.y - reticleBox.h/2 - hitbox.y;
 		normalise(x, y);
 		pj->speedX = x;
 		pj->speedY = y;
-		entities.push_back({pj, projectile});
+		entities.push_back(pj);
 	}
 	if (getInput()->w == getInput()->s){
 		speedY = 0;
@@ -92,7 +111,16 @@ void Player::update(){
 		speedY = 0;
 	}
 }
-
+void Player::renderMe(){             /////
+	render(texture, spriteRender);
+	render(reticleTexture, spriteRender);
+}
+void Enemy::renderMe(){           
+	render(texture, spriteRender);           
+}
+void Projectile::renderMe(){
+	render(texture, spriteRender);          ////
+}
 void Enemy::update(){
 /*  if (getInput()->one){			
 		hitbox.x = getInput()->mx;	 
@@ -104,12 +132,12 @@ void Projectile::update(){
 		this->y += speedY*2*globalSpeed;
 		if (this->x <= 100){
 			delete this; //https://www.youtube.com/watch?v=N5TWbeav7hI
-			this->dead = 1;
+			dead = 1;
 		}
 		hitbox.x = (int)(this->x);
 		hitbox.y = (int)(this->y);
 }
-void updateAll(std::vector<entity>& entities){
+void updateAll(std::vector<entity*>& entities){
 	int size = entities.size();
 	if (size > currEntityReserve)
 	{
@@ -120,22 +148,9 @@ void updateAll(std::vector<entity>& entities){
 		setColor();
 	}
 	for (int i = 0; i < size; ++i){
-		switch(entities[i].second){
-			case player:
-				((Player*)(entities[i].first))->update();
-				break;
-			case enemy:
-				((Enemy*)(entities[i].first))->update();
-				if (((Enemy*)(entities[i].first))->dead){
-					removeEntity(i);
-				}
-				break;
-			case projectile:
-				((Projectile*)(entities[i].first))->update();
-				if (((Projectile*)(entities[i].first))->dead){
-					removeEntity(i);
-				}
-				break;
+		entities[i]->update();
+		if (entities[i]->dead){
+			removeEntity(i);
 		}
 	}
 }

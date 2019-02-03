@@ -4,8 +4,8 @@
 #include <string>
 #include "SDL.h"
 #include <input.h>
-#include <graphics.h>
 #include <entities.h>
+#include <graphics.h>
 
 int SCREEN_HEIGHT = 480;
 int SCREEN_WIDTH = 640;
@@ -43,16 +43,15 @@ int main(int argc, char* argv[]){
 	std::cout << "\n\n\n" + hello + "\n\n\n";
 	setColor((white << 4) + cyan);
 	bool quit = 0;
-	std::vector<entity>& entities = getEntities();
+	std::vector<entity*>& entities = getEntities();
 	initTextures(renderer);
 	SDL_Rect reticlebox; reticlebox.w = 30; reticlebox.h = 30;
 	Texture reticle; reticle.first = getTexture(reticleTex); reticle.second = &reticlebox;
-	entities.push_back({new Player, player});
-	entities.push_back({&reticle, tex});
+	entities.push_back(new Player);
 	while (!quit){
 		quit = updateEvts();
 		updateAll(entities);
-		reticle.second->x = getInput()->mx - reticlebox.w/2; reticle.second->y = getInput()->my - reticlebox.h/2;
+		//reticle.second->x = getInput()->mx - reticlebox.w/2; reticle.second->y = getInput()->my - reticlebox.h/2;
 		unsigned int before = SDL_GetTicks();
 		renderAll(renderer, entities);
 		unsigned int diff = SDL_GetTicks() - before;

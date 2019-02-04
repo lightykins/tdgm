@@ -15,7 +15,9 @@ class entity {
 		virtual void update() {};
 		virtual void renderMe() {};
 		unsigned int collideType;
+		unsigned int collideMask;
 		unsigned int type;
+		SDL_Rect hitbox;
 		bool dead = 0;
 };
 class Player : public entity{
@@ -23,6 +25,7 @@ class Player : public entity{
 		virtual void update(); 
 		virtual void renderMe();
 		unsigned int collideType = 1 << player;
+		unsigned int collideMask;
 		unsigned int type = player;
 		
 		double x = 100;
@@ -33,7 +36,6 @@ class Player : public entity{
 		double moveSpeedY = 2;
 		double speedX = 0;
 		double speedY = 0;
-		SDL_Rect hitbox;
 		SDL_Texture* sprite;
 		Texture* texture;
 		SDL_Rect reticleBox;
@@ -47,8 +49,6 @@ class Enemy : public entity{
 	public:
 		virtual void update();
 		virtual void renderMe();
-		unsigned int collideType = 1 << enemy;
-		unsigned int type = enemy;
 		
 		unsigned int hp = 100;
 		unsigned int def = 0;
@@ -56,7 +56,6 @@ class Enemy : public entity{
 		double moveSpeedY = 2;
 		double speedX = 0;
 		double speedY = 0;
-		SDL_Rect hitbox;
 		SDL_Texture* sprite;
 		Texture* texture;
 		unsigned int renderType;
@@ -68,6 +67,7 @@ class Projectile : public entity{
 		virtual void update(); 
 		virtual void renderMe();
 		unsigned int collideType = 1 << projectile;
+		unsigned int collideMask;
 		unsigned int type = projectile;
 		//bool dead = 0;
 		
@@ -75,7 +75,6 @@ class Projectile : public entity{
 		double y;
 		double speedX = 0;
 		double speedY = 0;
-		SDL_Rect hitbox;
 		SDL_Texture* sprite;
 		Texture* texture;
 		unsigned int renderType;

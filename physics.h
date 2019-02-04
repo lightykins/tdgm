@@ -1,6 +1,10 @@
+#ifndef PHYSICS_INCLUDED
+#define PHYSICS_INCLUDED
+
 #include <SDL.h>
 #include <entities.h>
 
-int colliding(SDL_Rect* rect, int mask){
-	
-}
+bool rectColliding(SDL_Rect* one, SDL_Rect* two);
+entity* colliding(SDL_Rect* rect, unsigned int coltype);
+
+#endif

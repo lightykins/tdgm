@@ -2,6 +2,7 @@
 #include <graphics.h>
 #include <input.h>
 #include <math.h>
+#include <physics.h>
 #include <iostream>
 double globalSpeed = 1;
 unsigned int last2 = 0;
@@ -34,6 +35,9 @@ Player::Player(){
 	reticleSprite = getTexture(reticleTex);
 	reticleTexture = new Texture;
 	*reticleTexture = {reticleSprite, &reticleBox};
+	type = player;
+	collideType = 1 << type;
+	collideMask = (1 << enemy);
 }
 Enemy::Enemy(){
 	hitbox.x = getInput()->mx;
@@ -44,6 +48,9 @@ Enemy::Enemy(){
 	renderType = spriteRender;
 	texture = new Texture;
 	*texture = {sprite, &hitbox};
+	type = enemy;
+	collideType = 1 << type;
+	collideMask = (1 << projectile) | (1 << player);
 }
 Projectile::Projectile(){
 	Player* plr = (Player*)(getEntities()[0]);
@@ -57,6 +64,9 @@ Projectile::Projectile(){
 	renderType = spriteRender;
 	texture = new Texture;
 	*texture = {sprite, &hitbox};
+	type = projectile;
+	collideType = 1 << type;
+	collideMask = (1 << enemy);
 }
 void Player::update(){
 	//unsigned int last2;
@@ -136,6 +146,11 @@ void Projectile::update(){
 		}
 		hitbox.x = (int)(this->x);
 		hitbox.y = (int)(this->y);
+		entity* challenger = colliding(&hitbox, collideType);
+		if (challenger != NULL){
+			((Enemy*)challenger)->hp -= 10;
+			std::cout << ((Enemy*)challenger)->hp;
+		}
 }
 void updateAll(std::vector<entity*>& entities){
 	int size = entities.size();

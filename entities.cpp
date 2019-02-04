@@ -86,8 +86,8 @@ void Player::update(){
 		last2 = SDL_GetTicks();
 		Projectile* pj = new Projectile;
 		//Texture* reticle = (Texture*)(entities[1]);
-		double x = reticleBox.x - reticleBox.w/2 - hitbox.x;
-		double y = reticleBox.y - reticleBox.h/2 - hitbox.y;
+		double x = reticleBox.x - hitbox.x;
+		double y = reticleBox.y - hitbox.y;
 		normalise(x, y);
 		pj->speedX = x;
 		pj->speedY = y;
@@ -135,21 +135,24 @@ void Enemy::update(){
 /*  if (getInput()->one){			
 		hitbox.x = getInput()->mx;	 
 		hitbox.y = getInput()->my;	 
-	}								 */
+	}	
+	*/
+	if (!(this->hp)){
+		delete this;
+		dead = 1;
+	}
 }
 void Projectile::update(){
 		this->x += speedX*2*globalSpeed;
 		this->y += speedY*2*globalSpeed;
-		if (this->x <= 100){
-			delete this; //https://www.youtube.com/watch?v=N5TWbeav7hI
-			dead = 1;
-		}
 		hitbox.x = (int)(this->x);
 		hitbox.y = (int)(this->y);
 		entity* challenger = colliding(&hitbox, collideType);
-		if (challenger != NULL){
+		if (challenger != NULL && challenger->type == enemy){
 			((Enemy*)challenger)->hp -= 10;
-			std::cout << ((Enemy*)challenger)->hp;
+			delete this; //https://www.youtube.com/watch?v=N5TWbeav7hI
+			dead = 1;
+			challenger = NULL;
 		}
 }
 void updateAll(std::vector<entity*>& entities){

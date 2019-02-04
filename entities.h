@@ -7,7 +7,7 @@
 #include <iostream>
 enum {player, enemy, projectile, tex};
 const int playerIndex = 0;
-const int reticleIndex = 1;
+//const int reticleIndex = 1;
 typedef std::pair<SDL_Texture*, SDL_Rect*> Texture;
 //typedef std::pair<void*, int> entity;
 class entity {

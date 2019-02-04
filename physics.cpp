@@ -2,8 +2,16 @@
 #include <entities.h>
 
 bool rectColliding(SDL_Rect* one, SDL_Rect* two){
-	return (one->x > two->x+two->w) && (one->x + one->w < two->x) &&
-		   (one->y < two->y+two->h) && (one->y + one->h > two->y); 
+	int ox1 = one->x;
+	int ox2 = one->x + one->w;
+	int oy1 = one->y;
+	int oy2 = one->y + one->h;
+	
+	int tx1 = two->x;
+	int tx2 = two->x + two->w;
+	int ty1 = two->y;
+	int ty2 = two->y + two->h;	
+	return (ox1 < tx2 && ox2 > tx1 && oy1 < ty2 && oy2 > ty1);
 }
 entity* colliding(SDL_Rect* rect, unsigned int coltype){
 	std::vector<entity*>& ents = getEntities();

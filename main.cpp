@@ -15,8 +15,7 @@ SDL_Window* window = NULL;
 SDL_Renderer* renderer;
 InputManager inputmg;
 EntityManager entitymg;
-GraphicsManager graphicsmg;
-AllManager allmg;
+GraphicsManager graphicsmg(renderer)
 
 bool updateEvts(){
 	static SDL_Event e;

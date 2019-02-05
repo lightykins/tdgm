@@ -153,11 +153,11 @@ void EntityManager::removeEntity(long index){
 	entities.erase(entities.begin()+index);
 }
 void EntityManager::renderEntities(){
-	GraphicsManager::entityRenderBegin();
+	entityRenderBegin();
 	for (long i = 0; i < entities.size(); ++i){
 		entities[i].renderMe();
 	}
-	GraphicsManager::entityRenderFinish();
+	entityRenderFinish();
 }
 void EntityManager::updateEntities(){
 	long size = entities.size();

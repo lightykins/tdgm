@@ -24,9 +24,6 @@ class Player : public entity{
 	public:
 		virtual void update(); 
 		virtual void renderMe();
-		unsigned int collideType = 1 << player;
-		unsigned int collideMask;
-		unsigned int type = player;
 		
 		double x = 100;
 		double y = 100;
@@ -66,10 +63,6 @@ class Projectile : public entity{
 	public:
 		virtual void update(); 
 		virtual void renderMe();
-		unsigned int collideType = 1 << projectile;
-		unsigned int collideMask;
-		unsigned int type = projectile;
-		//bool dead = 0;
 		
 		double x;
 		double y;
@@ -81,8 +74,18 @@ class Projectile : public entity{
 		long index;
 		Projectile();
 };
-std::vector<entity*>& getEntities();
-void removeEntity(long index);
-void updateAll(std::vector<entity*>& entities);
-void setGlobalSpeed(double speed);
+class EntityManager{
+	public:
+		double globalSpeed = 1;
+		long currEntityReserve = 128;
+		std::vector<entity*>& getEntities();
+		input* inputData; //это надо давать
+		void removeEntity(long index);
+		void updateEntities();
+		void renderEntities();
+		void setGlobalSpeed(double speed);
+		
+	private:
+		std::vector<entity*> entities;
+};
 #endif

@@ -6,21 +6,9 @@
 #include <iostream>
 double globalSpeed = 1;
 unsigned int last2 = 0;
-std::vector<entity*> entities;
 long currEntityReserve = 128;
 bool enemyLatch = 1;
 
-std::vector<entity*>& getEntities(){
-	static bool once = [](){
-		entities.reserve(128);
-		return true;
-	} ();
-	return entities;
-}
-void removeEntity(long index){
-	std::vector<entity*>& ents = getEntities();
-	ents.erase(ents.begin()+index);
-}
 Player::Player(){
 	hitbox.x = 100;
 	hitbox.y = 100;
@@ -155,8 +143,24 @@ void Projectile::update(){
 			challenger = NULL;
 		}
 }
-void updateAll(std::vector<entity*>& entities){
-	int size = entities.size();
+void EntityManager::EntityManager(){
+	entities.reserve(currEntityReserve);
+}
+void EntityManager::setGlobalSpeed(double speed){
+	globalSpeed = speed;
+}
+void EntityManager::removeEntity(long index){
+	entities.erase(entities.begin()+index);
+}
+void EntityManager::renderEntities(){
+	GraphicsManager::entityRenderBegin();
+	for (long i = 0; i < entities.size(); ++i){
+		entities[i].renderMe();
+	}
+	GraphicsManager::entityRenderFinish();
+}
+void EntityManager::updateEntities(){
+	long size = entities.size();
 	if (size > currEntityReserve)
 	{
 		currEntityReserve *= 2;
@@ -165,13 +169,10 @@ void updateAll(std::vector<entity*>& entities){
 		std::cout << "Warning: over " << currEntityReserve/2 << " entities\n";
 		setColor();
 	}
-	for (int i = 0; i < size; ++i){
+	for (long i = 0; i < size; ++i){
 		entities[i]->update();
 		if (entities[i]->dead){
 			removeEntity(i);
 		}
 	}
-}
-void setGlobalSpeed(double speed){
-	globalSpeed = speed;
 }

@@ -6,12 +6,17 @@
 #include <input.h>
 #include <entities.h>
 #include <graphics.h>
+#include <physics.h>
 
 int SCREEN_HEIGHT = 480;
 int SCREEN_WIDTH = 640;
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer;
+InputManager inputmg;
+EntityManager entitymg;
+GraphicsManager graphicsmg;
+AllManager allmg;
 
 bool updateEvts(){
 	static SDL_Event e;
@@ -20,7 +25,7 @@ bool updateEvts(){
 			return 1;
 		}else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP || e.type == SDL_MOUSEMOTION 
 			      || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP){
-			updateInput(e);
+			inputmg.updateInput(e);
 		}
 	}	
 	return 0;
@@ -45,25 +50,20 @@ int main(int argc, char* argv[]){
 	bool quit = 0;
 	std::vector<entity*>& entities = getEntities();
 	initTextures(renderer);
-	SDL_Rect reticlebox; reticlebox.w = 30; reticlebox.h = 30;
-	Texture reticle; reticle.first = getTexture(reticleTex); reticle.second = &reticlebox;
-	entities.push_back(new Player);
-	while (!quit){
-		quit = updateEvts();
-		updateAll(entities);
-		//reticle.second->x = getInput()->mx - reticlebox.w/2; reticle.second->y = getInput()->my - reticlebox.h/2;
-		unsigned int before = SDL_GetTicks();
-		renderAll(renderer, entities);
-		unsigned int diff = SDL_GetTicks() - before;
-		if (diff < 1000/120) {SDL_Delay(1000/120 - diff); setGlobalSpeed(1);}
-		else {setGlobalSpeed((double)diff / (((double)1000)/120));}
-		/*std::cout	/*<< "w " << getInput()->w << " "
-					<< "a " << getInput()->a << " "
-					<< "s " << getInput()->s << " "
-					<< "d " << getInput()->d << " "
-					<< "1 " << getInput()->one << " "
-					<< '\r' << std::flush;*/
-	}
+	entitymg.inputData = inputmg.getInput();
+	entitymg.graphicsmg = graphicsmg;
+	entitymg.getEntites().push_back(new Player);
+		while (!quit){
+			unsigned int before = SDL_GetTicks();
+		
+			quit = updateEvts(); //and input
+			entitymg.updateEntities();
+			entitymg.renderEntities();
+		
+			unsigned int diff = SDL_GetTicks() - before;
+			if (diff < 1000/120) {SDL_Delay(1000/120 - diff); setGlobalSpeed(1);}
+			else {setGlobalSpeed((double)diff / (((double)1000)/120));}
+		}
 	SDL_Quit();
 	return 0;
 }

@@ -20,6 +20,23 @@ class entity {
 		SDL_Rect hitbox;
 		bool dead = 0;
 };
+class EntityManager{
+	public:
+		double globalSpeed = 1;
+		long currEntityReserve = 128;
+		std::vector<entity*>& getEntities();
+		void removeEntity(long index);
+		void updateEntities();
+		void renderEntities();
+		void setGlobalSpeed(double speed);
+		EntityManager();
+		
+	private:
+		std::vector<entity*> entities;
+};
+
+extern EntityManager* entitymMg;
+
 class Player : public entity{
 	public:
 		virtual void update(); 
@@ -74,18 +91,6 @@ class Projectile : public entity{
 		long index;
 		Projectile();
 };
-class EntityManager{
-	public:
-		double globalSpeed = 1;
-		long currEntityReserve = 128;
-		std::vector<entity*>& getEntities();
-		input* inputData; //это надо давать
-		void removeEntity(long index);
-		void updateEntities();
-		void renderEntities();
-		void setGlobalSpeed(double speed);
-		
-	private:
-		std::vector<entity*> entities;
-};
+
+
 #endif

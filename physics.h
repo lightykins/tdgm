@@ -12,7 +12,7 @@ class Collision{
 		SDL_Rect* collisionRect;
 		float xDirection;
 		float yDirection;
-}
+};
 class CollisionManager{
 	public:
 		void update();

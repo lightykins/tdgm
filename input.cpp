@@ -1,6 +1,7 @@
 #include <input.h>										//мб сделать по сканкодам как в тееворлд но надо до конца разобраться
+input inpp;
 
-void InputManager::updateInput(SDL_Event e){
+void updateInput(SDL_Event e){
 	if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP){
 	    bool flag = (e.type == SDL_KEYDOWN ? 1 : 0);
 	    switch(e.key.keysym.sym){
@@ -38,6 +39,6 @@ void InputManager::updateInput(SDL_Event e){
 		}
     }
 }
-input* InputManager::getInput(){
+input* getInput(){
 	return &inpp;
 }

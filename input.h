@@ -17,12 +17,14 @@ struct input
 	int mx = 0;
 	int my = 0;
 };
-class InputManager{
+/*class InputManager{
 	public:
 		input* getInput();
 		void updateInput(SDL_Event e);
 	private:
 		input inpp;
-};
+};*/
+input* getInput();
+void updateInput(SDL_Event e);
 
 #endif

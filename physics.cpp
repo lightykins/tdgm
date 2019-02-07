@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <entities.h>
+#include <managers.h>
 
 bool rectColliding(SDL_Rect* one, SDL_Rect* two){
 	int ox1 = one->x;
@@ -14,7 +15,7 @@ bool rectColliding(SDL_Rect* one, SDL_Rect* two){
 	return (ox1 < tx2 && ox2 > tx1 && oy1 < ty2 && oy2 > ty1);
 }
 entity* colliding(SDL_Rect* rect, unsigned int coltype){
-	std::vector<entity*>& ents = entitymMg->getEntities();
+	std::vector<entity*>& ents = Entities->getEntities();
 	for (int i = 0; i < ents.size(); ++i){
 		//if (ents[i]->type == enemy){
 		//	std::cout << ents[i]->collideMask;

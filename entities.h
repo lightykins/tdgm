@@ -35,7 +35,7 @@ class EntityManager{
 		std::vector<entity*> entities;
 };
 
-extern EntityManager* entitymMg;
+//extern EntityManager* entitymMg;
 
 class Player : public entity{
 	public:

@@ -7,7 +7,7 @@
 #include <physics.h>
 #include <input.h>
 #include <graphics.h>
-
+#include <managers.h>
 
 EntityManager entityMg;
 
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]){
 	initTextures();
 	//entityMg.inputData = inputmg.getInput();
 	//entityMg.graphicsmg = graphicsmg;
-	entityMg.getEntities().push_back(new Player);
+	Entities->getEntities().push_back(new Player);
 		while (!quit){
 			unsigned int before = SDL_GetTicks();
 		

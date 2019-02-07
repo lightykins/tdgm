@@ -4,11 +4,13 @@
 #include <math.h>
 #include <physics.h>
 #include <iostream>
+#include <managers.h>
+
 double globalSpeed = 1;
 unsigned int last2 = 0;
 long currEntityReserve = 128;
 bool enemyLatch = 1;
-EntityManager* entitymMg;
+EntityManager* Entities;
 Player::Player(){
 	hitbox.x = 100;
 	hitbox.y = 100;
@@ -41,7 +43,7 @@ Enemy::Enemy(){
 	collideMask = (1 << projectile) | (1 << player);
 }
 Projectile::Projectile(){
-	Player* plr = (Player*)(entitymMg->getEntities()[0]);
+	Player* plr = (Player*)(Entities->getEntities()[0]);
 	hitbox.x = plr->hitbox.x;
 	hitbox.y = plr->hitbox.y;
 	this->x = hitbox.x;
@@ -65,7 +67,7 @@ void Player::update(){
 	reticleBox.y = getInput()->my - reticleBox.h/2;
 	if (getInput()->one && enemyLatch){
 		enemyLatch = 0;
-		entitymMg->getEntities().push_back(new Enemy);
+		Entities->getEntities().push_back(new Enemy);
 	}
 	if (!getInput()->one){
 		enemyLatch = 1;
@@ -79,7 +81,7 @@ void Player::update(){
 		normalise(x, y);
 		pj->speedX = x;
 		pj->speedY = y;
-		entitymMg->getEntities().push_back(pj);
+		Entities->getEntities().push_back(pj);
 	}
 	if (getInput()->w == getInput()->s){
 		speedY = 0;
@@ -145,7 +147,7 @@ void Projectile::update(){
 }
 EntityManager::EntityManager(){
 	entities.reserve(currEntityReserve);
-	entitymMg = this;
+	Entities = this;
 }
 std::vector<entity*>& EntityManager::getEntities(){
 	return entities;

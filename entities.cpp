@@ -1,10 +1,9 @@
-#include <entities.h>
+#include <iostream>
+
+#include <managers.h>
 #include <graphics.h>
-#include <input.h>
 #include <math.h>
 #include <physics.h>
-#include <iostream>
-#include <managers.h>
 
 double globalSpeed = 1;
 unsigned int last2 = 0;
@@ -30,8 +29,8 @@ Player::Player(){
 	collideMask = (1 << enemy);
 }
 Enemy::Enemy(){
-	hitbox.x = getInput()->mx;
-	hitbox.y = getInput()->my;
+	hitbox.x = Input->getInput()->mx;
+	hitbox.y = Input->getInput()->my;
 	hitbox.w = 50;
 	hitbox.h = 50;
 	sprite = getTexture(enemyTex);
@@ -63,16 +62,16 @@ void Player::update(){
 	if (!this->hp){
 		std::cout << "You fucked up\n";
 	}
-	reticleBox.x = getInput()->mx - reticleBox.w/2;
-	reticleBox.y = getInput()->my - reticleBox.h/2;
-	if (getInput()->one && enemyLatch){
+	reticleBox.x = Input->getInput()->mx - reticleBox.w/2;
+	reticleBox.y = Input->getInput()->my - reticleBox.h/2;
+	if (Input->getInput()->one && enemyLatch){
 		enemyLatch = 0;
 		Entities->getEntities().push_back(new Enemy);
 	}
-	if (!getInput()->one){
+	if (!Input->getInput()->one){
 		enemyLatch = 1;
 	}
-	if (getInput()->m1 && ((SDL_GetTicks() - last2) > 200)){
+	if (Input->getInput()->m1 && ((SDL_GetTicks() - last2) > 200)){
 		last2 = SDL_GetTicks();
 		Projectile* pj = new Projectile;
 		//Texture* reticle = (Texture*)(entities[1]);
@@ -83,17 +82,17 @@ void Player::update(){
 		pj->speedY = y;
 		Entities->getEntities().push_back(pj);
 	}
-	if (getInput()->w == getInput()->s){
+	if (Input->getInput()->w == Input->getInput()->s){
 		speedY = 0;
 	}else
 	{
-		speedY = (getInput()->w ? -1 : 1)*moveSpeedY*globalSpeed;
+		speedY = (Input->getInput()->w ? -1 : 1)*moveSpeedY*globalSpeed;
 	}
-	if (getInput()->d == getInput()->a){
+	if (Input->getInput()->d == Input->getInput()->a){
 		speedX = 0;
 	}else
 	{
-		speedX = (getInput()->a ? -1 : 1)*moveSpeedY*globalSpeed;
+		speedX = (Input->getInput()->a ? -1 : 1)*moveSpeedY*globalSpeed;
 	}
 	bool x = speedX != 0;
 	bool y = speedY != 0;
@@ -122,9 +121,9 @@ void Projectile::renderMe(){
 	render(texture, spriteRender);          ////
 }
 void Enemy::update(){
-/*  if (getInput()->one){			
-		hitbox.x = getInput()->mx;	 
-		hitbox.y = getInput()->my;	 
+/*  if (Input->getInput()->one){			
+		hitbox.x = Input->getInput()->mx;	 
+		hitbox.y = Input->getInput()->my;	 
 	}	
 	*/
 	if (!(this->hp)){

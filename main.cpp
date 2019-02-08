@@ -3,13 +3,13 @@
 #include <windows.h>
 #include <string>
 #include "SDL.h"
-#include <entities.h>
 #include <physics.h>
 #include <input.h>
 #include <graphics.h>
 #include <managers.h>
 
 EntityManager entityMg;
+InputManager inputMg;
 
 bool updateEvts(){
 	static SDL_Event e;
@@ -18,7 +18,7 @@ bool updateEvts(){
 			return 1;
 		}else if (e.type == SDL_KEYDOWN || e.type == SDL_KEYUP || e.type == SDL_MOUSEMOTION 
 			      || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP){
-			updateInput(e);
+			Input->updateInput(e);
 		}
 	}	
 	return 0;
@@ -31,15 +31,13 @@ int main(int argc, char* argv[]){
 	setColor((white << 4) + cyan);
 	bool quit = 0;
 	initTextures();
-	//entityMg.inputData = inputmg.getInput();
-	//entityMg.graphicsmg = graphicsmg;
 	Entities->getEntities().push_back(new Player);
 		while (!quit){
 			unsigned int before = SDL_GetTicks();
 		
 			quit = updateEvts(); //and input
-			entityMg.updateEntities();
-			entityMg.renderEntities();
+			Entities->updateEntities();
+			Entities->renderEntities();
 		
 			unsigned int diff = SDL_GetTicks() - before;
 			if (diff < 1000/120) {SDL_Delay(1000/120 - diff); entityMg.setGlobalSpeed(1);}

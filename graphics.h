@@ -19,11 +19,21 @@ struct color{
 
 
 enum colors {black, blue, green, cyan, red, purple, yellow, white, gray, bblue, bgreen, bcyan, bred, bpurple, byellow, bwhite};
-void setColor(int color = white);
-bool initGraphics();
-void render(void* pt, int type, color* Color = NULL);
-void entityRenderBegin();
-void entityRenderFinish();
-void initTextures();
-SDL_Texture* getTexture(int type);
+
+class GraphicsManager{
+	public:
+		void setColor(int color = white);
+		GraphicsManager();
+		void render(void* pt, int type, color* Color = NULL);
+		void entityRenderBegin();
+		void entityRenderFinish();
+		SDL_Texture* getTexture(int type);	
+	private:
+		void initTextures();	
+		SDL_Renderer* ourRenderer;
+		SDL_Window* window;
+		std::vector<SDL_Texture*> textures;
+		std::vector<std::string> textureFnames = {"player.png", "enemy.png", "projectile.png", "reticle.png"};
+		SDL_Texture* loadFromPath(std::string path);
+};
 #endif

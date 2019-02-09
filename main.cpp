@@ -4,12 +4,11 @@
 #include <string>
 #include "SDL.h"
 #include <physics.h>
-#include <input.h>
-#include <graphics.h>
 #include <managers.h>
 
 EntityManager entityMg;
 InputManager inputMg;
+GraphicsManager graphicsMg;
 
 bool updateEvts(){
 	static SDL_Event e;
@@ -25,12 +24,10 @@ bool updateEvts(){
 }
 
 int main(int argc, char* argv[]){
-	if (!initGraphics()) return 0;
-	setColor(green);
+	Graphics->setColor(green);
 	std::cout << "\n\n\n" + hello + "\n\n\n";
-	setColor((white << 4) + cyan);
+	Graphics->setColor((white << 4) + cyan);
 	bool quit = 0;
-	initTextures();
 	Entities->getEntities().push_back(new Player);
 		while (!quit){
 			unsigned int before = SDL_GetTicks();
@@ -40,8 +37,8 @@ int main(int argc, char* argv[]){
 			Entities->renderEntities();
 		
 			unsigned int diff = SDL_GetTicks() - before;
-			if (diff < 1000/120) {SDL_Delay(1000/120 - diff); entityMg.setGlobalSpeed(1);}
-			else {entityMg.setGlobalSpeed((double)diff / (((double)1000)/120));}
+			if (diff < 1000/120) {SDL_Delay(1000/120 - diff); Entities->setGlobalSpeed(1);}
+			else {Entities->setGlobalSpeed((double)diff / (((double)1000)/120));}
 		}
 	SDL_Quit();
 	return 0;

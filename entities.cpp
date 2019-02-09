@@ -15,13 +15,13 @@ Player::Player(){
 	hitbox.y = 100;
 	hitbox.w = 50;
 	hitbox.h = 50;
-	sprite = getTexture(playerTex);
+	sprite = Graphics->getTexture(playerTex);
 	renderType = spriteRender;
 	texture = new Texture;
 	*texture = {sprite, &hitbox};
 	reticleBox.w = 50;
 	reticleBox.h = 50;
-	reticleSprite = getTexture(reticleTex);
+	reticleSprite = Graphics->getTexture(reticleTex);
 	reticleTexture = new Texture;
 	*reticleTexture = {reticleSprite, &reticleBox};
 	type = player;
@@ -33,7 +33,7 @@ Enemy::Enemy(){
 	hitbox.y = Input->getInput()->my;
 	hitbox.w = 50;
 	hitbox.h = 50;
-	sprite = getTexture(enemyTex);
+	sprite = Graphics->getTexture(enemyTex);
 	renderType = spriteRender;
 	texture = new Texture;
 	*texture = {sprite, &hitbox};
@@ -49,7 +49,7 @@ Projectile::Projectile(){
 	this->y = hitbox.y;
 	hitbox.w = 50;
 	hitbox.h = 50;
-	sprite = getTexture(projectileTex);
+	sprite = Graphics->getTexture(projectileTex);
 	renderType = spriteRender;
 	texture = new Texture;
 	*texture = {sprite, &hitbox};
@@ -111,14 +111,14 @@ void Player::update(){
 	}
 }
 void Player::renderMe(){             /////
-	render(texture, spriteRender);
-	render(reticleTexture, spriteRender);
+	Graphics->render(texture, spriteRender);
+	Graphics->render(reticleTexture, spriteRender);
 }
 void Enemy::renderMe(){           
-	render(texture, spriteRender);           
+	Graphics->render(texture, spriteRender);           
 }
 void Projectile::renderMe(){
-	render(texture, spriteRender);          ////
+	Graphics->render(texture, spriteRender);          ////
 }
 void Enemy::update(){
 /*  if (Input->getInput()->one){			
@@ -158,11 +158,11 @@ void EntityManager::removeEntity(long index){
 	entities.erase(entities.begin()+index);
 }
 void EntityManager::renderEntities(){
-	entityRenderBegin();
+	Graphics->entityRenderBegin();
 	for (long i = 0; i < entities.size(); ++i){
 		entities[i]->renderMe();
 	}
-	entityRenderFinish();
+	Graphics->entityRenderFinish();
 }
 void EntityManager::updateEntities(){
 	long size = entities.size();
@@ -170,9 +170,9 @@ void EntityManager::updateEntities(){
 	{
 		currEntityReserve *= 2;
 		entities.reserve(currEntityReserve);
-		setColor(byellow);
+		Graphics->setColor(byellow);
 		std::cout << "Warning: over " << currEntityReserve/2 << " entities\n";
-		setColor();
+		Graphics->setColor();
 	}
 	for (long i = 0; i < size; ++i){
 		entities[i]->update();

@@ -2,29 +2,28 @@
 #include <windows.h>
 #include <SDL.h>
 #include <SDL_image.h>
-#include <graphics.h>
-SDL_Window* window;
-SDL_Renderer* ourRenderer;
-std::vector<SDL_Texture*> textures;
-std::vector<std::string> textureFnames = {"player.png", "enemy.png", "projectile.png", "reticle.png"};
+#include <managers.h>
+
 int SCREEN_HEIGHT = 480;
 int SCREEN_WIDTH = 640;
-void setColor(int color){
+GraphicsManager* Graphics;
+
+void GraphicsManager::setColor(int color){
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
-bool initGraphics(){
+GraphicsManager::GraphicsManager(){
     if (SDL_Init(SDL_INIT_VIDEO) < 0){
 	    setColor(red);
 	    std::cout << SDL_GetError() << "\n";
 	    setColor();
-	    return 0;
 	}else{
 		window = SDL_CreateWindow( "cheto tam", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		ourRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	}
-	return 1;
+	initTextures();
+	Graphics = this;
 }
-void render(void* pt, int type, color* Color){
+void GraphicsManager::render(void* pt, int type, color* Color){
 	switch(type){
 		case rectangleRender:
 			{
@@ -53,24 +52,24 @@ void render(void* pt, int type, color* Color){
 	}
 	SDL_RenderPresent(renderer);
 }*/
-void entityRenderBegin(){
+void GraphicsManager::entityRenderBegin(){
 	SDL_SetRenderDrawColor(ourRenderer, 255, 255, 255, 0);
 	SDL_RenderClear(ourRenderer);
 }
-void entityRenderFinish(){
+void GraphicsManager::entityRenderFinish(){
 	SDL_RenderPresent(ourRenderer);
 }
-SDL_Texture* loadFromPath(std::string path){
+SDL_Texture* GraphicsManager::loadFromPath(std::string path){
 	SDL_Texture* a;
 	SDL_Surface* load = IMG_Load(path.c_str());
 	a = SDL_CreateTextureFromSurface(ourRenderer, load);
 	return a;
 }
-void initTextures(){
+void GraphicsManager::initTextures(){
 	for(int i = 0; i < ALWAYS_LAST; ++i){
 		textures.push_back (loadFromPath("resources/" + textureFnames[i]));
 	}
 }
-SDL_Texture* getTexture(int type){
+SDL_Texture* GraphicsManager::getTexture(int type){
 	return textures[type];
 }
